@@ -18,7 +18,7 @@ export default class LoginComponent extends Component {
 
         <View style={styles.topView}>
           <Image source={logo} style={styles.image} />
-          <Text style={styles.text}>REACT NATIVE</Text>
+          {/* <Text style={styles.text}>REACT NATIVE</Text> */}
         </View>
         {/* <LoadingIndicator isLoading={this.state.isLoading}></LoadingIndicator> */}
         <View style={styles.middleView}>
@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   image: {
-    width: 80,
-    height: 80,
+    width: 200,
+    height: 200,
   },
   text: {
     color: 'white',

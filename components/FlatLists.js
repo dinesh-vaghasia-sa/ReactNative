@@ -1,71 +1,113 @@
 import React, { Component } from 'react';
-import { View, Text, SafeAreaView, ScrollView, StyleSheet, Image, FlatList, ListItem, Dimensions, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, SafeAreaView, ScrollView, StyleSheet, Image, FlatList, Alert, Dimensions, TouchableWithoutFeedback, ImageBackground } from 'react-native';
 import Constants from 'expo-constants';
 import { render } from 'react-dom';
-const DATA = [
-  {
-    id: '1',
-    title: '90 Easy Chicken Dinner Ideas and Recipes - Best Chicken Recipes',
-    image: require('../assets/recipe/1.jpeg'),
-  },
-  {
-    id: '2',
-    title: 'Delicious and Quick Recipes | HelloFresh',
-    image: require('../assets/recipe/2.jpeg'),
-  },
-  {
-    id: '3',
-    title: 'Cajun Blackened Chicken and Rice Bowls with Spicy Crema',
-    image: require('../assets/recipe/3.jpeg'),
-  },
-  {
-    id: '4',
-    title: 'Quick vegetarian recipes | BBC Good Food',
-    image: require('../assets/recipe/4.jpeg'),
-  },
-  {
-    id: '5',
-    title: 'Chicken Dinner Ideas and Recipes - Best Chicken Recipes',
-    image: require('../assets/recipe/1.jpeg'),
-  },
-  {
-    id: '6',
-    title: 'Delicious HelloFresh',
-    image: require('../assets/recipe/2.jpeg'),
-  },
-  {
-    id: '7',
-    title: 'Cajun Blackened Chicken and Rice Bowls with Spicy Crema',
-    image: require('../assets/recipe/3.jpeg'),
-  }
-];
-function Item({ title }) {
-  return (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
-    </View>
-  );
-}
+import { FlatlistDetail } from './FlatlistDetail'
+// const DATA = [
+//   {
+//     id: '1',
+//     title: '90 Easy Chicken Dinner Ideas and Recipes - Best Chicken Recipes',
+//     image: require('../assets/recipe/1.jpeg'),
+//   },
+//   {
+//     id: '2',
+//     title: 'Delicious and Quick Recipes | HelloFresh',
+//     image: require('../assets/recipe/2.jpeg'),
+//   },
+//   {
+//     id: '3',
+//     title: 'Cajun Blackened Chicken and Rice Bowls with Spicy Crema',
+//     image: require('../assets/recipe/3.jpeg'),
+//   },
+//   {
+//     id: '4',
+//     title: 'Quick vegetarian recipes | BBC Good Food',
+//     image: require('../assets/recipe/4.jpeg'),
+//   },
+//   {
+//     id: '5',
+//     title: 'Chicken Dinner Ideas and Recipes - Best Chicken Recipes',
+//     image: require('../assets/recipe/1.jpeg'),
+//   },
+//   {
+//     id: '6',
+//     title: 'Delicious HelloFresh',
+//     image: require('../assets/recipe/2.jpeg'),
+//   },
+//   {
+//     id: '7',
+//     title: 'Cajun Blackened Chicken and Rice Bowls with Spicy Crema',
+//     image: require('../assets/recipe/3.jpeg'),
+//   }
+// ];
+// function Item({ title }) {
+//   return (
+//     <View style={styles.item}>
+//       <Text style={styles.title}>{title}</Text>
+//     </View>
+//   );
+// }
 export default class FlatLists extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      recipeList: []
+    };
+  }
+  componentDidMount() {
+    this.getReceipeList()
+    // console.log(this.getReceipeList());
+  }
+
+  onItemClick = (item) => {
+    this.props.navigation.navigate('FlatlistDetail', {item});
+  }
   render() {
     return (<ScrollView style={styles.container}>
       <SafeAreaView>
         <FlatList
-          data={DATA}
+          data={this.state.receipeList}
+          extraData={this.state}
           numColumns={2}
-          renderItem={({ item }) => {
+          renderItem={({ item, index }) => {
             return <View style={styles.boxContainer}>
-              <Image flax='1' source={item.image} style={styles.imageRadius} />
-              <TouchableWithoutFeedback>
-                <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
+              
+              <ImageBackground onPress={() => this.onItemClick(item)} source={{ uri: (item.photo) }} style={{ width: '100%', height: 130 }}>
+                {/* <Image style={{ flex: 1 }} source={{ uri: (item.photo) }} /> */}
+              </ImageBackground>
+              <TouchableWithoutFeedback onPress={() => this.onItemClick(item)}>
+                <Text style={styles.title} numberOfLines={1}>{item.name}</Text>
               </TouchableWithoutFeedback>
             </View>
           }}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item, recipeId) => recipeId.toString()}
         />
       </SafeAreaView>
     </ScrollView>
     )
+  }
+  getReceipeList() {
+    fetch('http://35.160.197.175:3006/api/v1/recipe/feeds',
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Mn0.MGBf-reNrHdQuwQzRDDNPMo5oWv4GlZKlDShFAAe16s',
+          'Content-Type': 'application/json'
+        },
+      }).then((response) => {
+        return response.json()
+      }).then((responseJSON) => {
+        // console.log(responseJSON);
+        this.setState({ receipeList: responseJSON })
+      }).catch((error) => {
+        console.log(error);
+        Alert.alert('React', "data", [
+          {
+            text: 'Ok',
+            style: 'cancel'
+          },
+        ])
+      })
   }
 }
 
@@ -74,21 +116,22 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: Constants.statusBarHeight,
   },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
+  // item: {
+  //   backgroundColor: '#f9c2ff',
+  //   padding: 10,
+  //   marginVertical: 8,
+  //   marginHorizontal: 16,
+  // },
   boxContainer: {
     margin: 10,
     backgroundColor: 'rgba(240,53,224,0.4)',
     height: 180,
-    padding: 20,
+    padding: 0,
     width: ((Dimensions.get('window').width - 40) / 2),
-    borderRadius: 20,
-    justifyContent: 'center',
+    borderRadius: 1,
+    // justifyContent: 'center',
     alignItems: 'center',
+    top:0
   },
   imageRadius: {
     borderRadius: 50,
@@ -96,8 +139,12 @@ const styles = StyleSheet.create({
     height: 100,
   },
   title: {
-    fontSize: 16,
+    fontSize: 17,
     marginTop: 8,
     color: '#ffffff',
+    fontWeight: "bold",
+    padding: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });
