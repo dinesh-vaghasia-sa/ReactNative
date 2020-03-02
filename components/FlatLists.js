@@ -1,52 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, SafeAreaView, ScrollView, StyleSheet, Image, FlatList, Alert, Dimensions, TouchableWithoutFeedback, ImageBackground } from 'react-native';
 import Constants from 'expo-constants';
-import { render } from 'react-dom';
-import { FlatlistDetail } from './FlatlistDetail'
-// const DATA = [
-//   {
-//     id: '1',
-//     title: '90 Easy Chicken Dinner Ideas and Recipes - Best Chicken Recipes',
-//     image: require('../assets/recipe/1.jpeg'),
-//   },
-//   {
-//     id: '2',
-//     title: 'Delicious and Quick Recipes | HelloFresh',
-//     image: require('../assets/recipe/2.jpeg'),
-//   },
-//   {
-//     id: '3',
-//     title: 'Cajun Blackened Chicken and Rice Bowls with Spicy Crema',
-//     image: require('../assets/recipe/3.jpeg'),
-//   },
-//   {
-//     id: '4',
-//     title: 'Quick vegetarian recipes | BBC Good Food',
-//     image: require('../assets/recipe/4.jpeg'),
-//   },
-//   {
-//     id: '5',
-//     title: 'Chicken Dinner Ideas and Recipes - Best Chicken Recipes',
-//     image: require('../assets/recipe/1.jpeg'),
-//   },
-//   {
-//     id: '6',
-//     title: 'Delicious HelloFresh',
-//     image: require('../assets/recipe/2.jpeg'),
-//   },
-//   {
-//     id: '7',
-//     title: 'Cajun Blackened Chicken and Rice Bowls with Spicy Crema',
-//     image: require('../assets/recipe/3.jpeg'),
-//   }
-// ];
-// function Item({ title }) {
-//   return (
-//     <View style={styles.item}>
-//       <Text style={styles.title}>{title}</Text>
-//     </View>
-//   );
-// }
 export default class FlatLists extends Component {
   constructor(props) {
     super(props);
@@ -116,12 +70,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: Constants.statusBarHeight,
   },
-  // item: {
-  //   backgroundColor: '#f9c2ff',
-  //   padding: 10,
-  //   marginVertical: 8,
-  //   marginHorizontal: 16,
-  // },
   boxContainer: {
     margin: 10,
     backgroundColor: 'rgba(240,53,224,0.4)',
