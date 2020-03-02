@@ -67,12 +67,12 @@ export default class FlatLists extends Component {
       <SafeAreaView>
         <FlatList
           data={this.state.receipeList}
-          extraData={this.state}
+          extraData={this.state.receipeList}
           numColumns={2}
           renderItem={({ item, index }) => {
             return <View style={styles.boxContainer}>
               
-              <ImageBackground onPress={() => this.onItemClick(item)} source={{ uri: (item.photo) }} style={{ width: '100%', height: 130 }}>
+              <ImageBackground onPress={() => this.onItemClick(item)} source={{ uri: item.photo ? item.photo : 'https://bootdey.com/img/Content/avatar/avatar6.png' }} style={{ width: '100%', height: 130 }}>
                 {/* <Image style={{ flex: 1 }} source={{ uri: (item.photo) }} /> */}
               </ImageBackground>
               <TouchableWithoutFeedback onPress={() => this.onItemClick(item)}>
